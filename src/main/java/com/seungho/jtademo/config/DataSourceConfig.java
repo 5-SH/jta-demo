@@ -111,6 +111,16 @@ public class DataSourceConfig {
   public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
     SqlSessionFactoryBean factory = new SqlSessionFactoryBean();
     factory.setDataSource(dataSource);
+    /**
+     * MyBatis 에서 SQLSession 에서 커넥션을 얻어오는 TransactionFactory 구현체를 TransactionSynchronizationManager 를
+     * 이용하지 않는 ManagedTransactionFactory 로 교체한다.
+     * AutoConfig로 설정하거나 아무것도 설정하지 않으면 기본값은 SpringManagedTransactionFactory 로 주입된다.
+     *
+     * mybatis-spring 모듈에서는 쿼리를 수행할 SQLSession 객체를 얻을 때 SpringManagedTransactionFactory 에서 생성되는
+     * SpringManagedTransaction 의 참조를 전달받는다.
+     * SQLSession을 통해 SQL 구문이 수행될 때 참조로 전달받았던 SpringManagedTransaction.openConnection()을 통해 커넥션을 가져온다.
+     * 이 openConnection()은 내부에서 org.springframework.jdbc.datasource.DataSourceUtils 의 정적 메서드인 getConnection() 을 호출한다.
+     */
     factory.setTransactionFactory(new ManagedTransactionFactory());
     return factory.getObject();
   }
