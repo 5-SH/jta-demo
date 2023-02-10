@@ -114,12 +114,17 @@ public class DataSourceConfig {
     /**
      * MyBatis 에서 SQLSession 에서 커넥션을 얻어오는 TransactionFactory 구현체를 TransactionSynchronizationManager 를
      * 이용하지 않는 ManagedTransactionFactory 로 교체한다.
-     * AutoConfig로 설정하거나 아무것도 설정하지 않으면 기본값은 SpringManagedTransactionFactory 로 주입된다.
+     * TransactionSynchronizationManager 는 트랜잭션 동기화를 위해 트랜잭션을 만들 Connection 오브젝트를
+     * 특별한 저장소(LocalThread) 에 보관하고 이후 필요할 때 저장된 Connection 을 가져다 사용한다.
+     * AutoConfig 로 설정하거나 아무것도 설정하지 않으면 기본값은 SpringManagedTransactionFactory 로 주입된다.
      *
      * mybatis-spring 모듈에서는 쿼리를 수행할 SQLSession 객체를 얻을 때 SpringManagedTransactionFactory 에서 생성되는
      * SpringManagedTransaction 의 참조를 전달받는다.
-     * SQLSession을 통해 SQL 구문이 수행될 때 참조로 전달받았던 SpringManagedTransaction.openConnection()을 통해 커넥션을 가져온다.
+     * SQLSession 을 통해 SQL 구문이 수행될 때 참조로 전달받았던 SpringManagedTransaction.openConnection()을 통해 커넥션을 가져온다.
      * 이 openConnection()은 내부에서 org.springframework.jdbc.datasource.DataSourceUtils 의 정적 메서드인 getConnection() 을 호출한다.
+     * 이때 추출되는 커넥션은 RoutingMapperAspect 에서 변경을 의도한 RoutingDataSource 의 타깃 데이터소스의 커넥션이 아니라,
+     * TransactionSynchronizationManager 에 의해 동기화된 커넥션이다.
+     * 따라서 JTA 에서 관리하는 커넥션을 받아오기 위해 ManagedTransactionFactory 를 사용한다.
      */
     factory.setTransactionFactory(new ManagedTransactionFactory());
     return factory.getObject();
