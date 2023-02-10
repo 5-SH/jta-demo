@@ -18,7 +18,7 @@ public class DataSourceConfig {
 
   @Bean
   public DataSource routingDataSource() {
-    AbstractRoutingDataSource routingDataSource = new RoutingDatasource();
+    AbstractRoutingDataSource routingDataSource = new RoutingDataSource();
     routingDataSource.setDefaultTargetDataSource(createMySqlDataSource("jdbc:mysql://localhost:3306/spring"));
 
     Map<Object, Object> targetDataSources = new HashMap<>();
