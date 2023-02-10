@@ -54,6 +54,6 @@ public class RoutingMapperAspect {
   }
 
   private Integer determineRoutingDataSourceIndex(String userId) {
-    return Math.abs(userId.hashCode()) % 1;
+    return Math.abs(userId.hashCode()) % 2;
   }
 }

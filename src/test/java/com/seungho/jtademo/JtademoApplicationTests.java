@@ -18,9 +18,9 @@ public class JtademoApplicationTests {
 
 	@Test
 	public void addAll() {
-		fooService.deleteAll();
 		log.debug("addAll test: {}", "=======================================================");
 		String userId = "test5";
+		fooService.deleteAll(userId);
 		fooService.bar(userId);
 
 		Assertions.assertThat(fooService.getUserCount(userId)).isEqualTo(1);
@@ -29,11 +29,11 @@ public class JtademoApplicationTests {
 
 	@Test
 	public void addAllWithException() {
-		fooService.deleteAll();
-		String userId = "test5";
 
+			String userId = "test5";
 		try {
-			log.debug("addAll test: {}", "=======================================================");
+			log.debug("addAllWithException test: {}", "=======================================================");
+			fooService.deleteAll(userId);
 			fooService.barWithException(userId);
 
 			Assertions.assertThat(fooService.getUserCount(userId)).isEqualTo(0);

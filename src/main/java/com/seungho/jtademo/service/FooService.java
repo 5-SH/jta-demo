@@ -30,9 +30,9 @@ public class FooService {
   }
 
   @Transactional
-  public void deleteAll() {
-    userMapper.deleteAll("*");
-    commonMapper.deleteAll("*");
+  public void deleteAll(String userId) {
+    userMapper.deleteAll(userId);
+    commonMapper.deleteAll(userId);
   }
 
   public int getUserCount(String userId) { return userMapper.getCount(userId); }

@@ -23,7 +23,7 @@ public class DataSourceConfig {
 
     Map<Object, Object> targetDataSources = new HashMap<>();
     targetDataSources.put(0, createPostgresqlDataSource("jdbc:postgresql://localhost:5433/postgres"));
-//    targetDataSources.put(1, createMariaDataSource("jdbc:mariadb://localhost:3305/mariadb"));
+    targetDataSources.put(1, createMariaDataSource("jdbc:mariadb://localhost:3305/maria"));
 //    targetDataSources.put(2, createOracleDataSource("jdbc:oracle:thin:@localhost:1521/xe"));
 //    targetDataSources.put(3, createSqlServerDataSource("jdbc:sqlserver://localhost:1433;DatabaseName=mssql"));
 
